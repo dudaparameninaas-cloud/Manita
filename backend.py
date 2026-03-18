@@ -8,17 +8,17 @@ app = Flask(__name__)
 port = int(os.environ.get('PORT', 5000))
 
 # Not metni - TEMİZ VE DÜZENLİ
-ROJDA_NOTU = """Rojda'm...
+ROJDA_NOTU = """Seyhan’ım…
 
-Bu site sana özel yaptım. Nasıl oldu bilmiyorum ama ilk günden bile bana çok iyi geldin.
+Bu siteyi sana özel yaptım. Belki kusurları vardır, belki eksik kalmıştır… ama içindeki her şeyde sen varsın. Çünkü daha ilk günden, nasıl oldu anlamadım ama kalbime dokundun.
 
-Sanki bana Allah'ın bir hediyesi oldun benim için. Öyle fizik falan önemli değil benim için. Tek önemli bir şeyim olsun istiyorum, o da sensin.
+Sanki hayatıma gönderilmiş en güzel hediye gibisin. Öyle dış görünüş, fizik falan… inan hiçbiri umrumda değil. Benim tek istediğim bir şey var: o da sensin. Sadece sen…
 
-Yani öyle herkesden farklı olalım, bir birimize ait olalım. Millet çorap değişir gibi manita değişirken, biz gerçek olalım ömrüm...
+İstiyorum ki herkes gibi olmayalım. Geçici değil, gerçek olalım. Herkes gelip geçerken, biz kalalım. İnsanlar çorap değiştirir gibi sevgili değiştirirken, biz birbirimize ait olalım… sağlam, gerçek, tertemiz bir şekilde.
 
-Bu yolda giden sonuna kadar giden, ne olursa olsun benle beraber olmaya var mısın?
+Ben bu yolda seninle yürümek istiyorum. Ne olursa olsun, ne yaşarsak yaşayalım, elini bırakmadan… sonuna kadar.
 
-🤍"""
+Peki sen… benimle birlikte bu yolda yürümeye var mısın, ömrüm? 🤍"""
 
 # İlk sayfa HTML'i - GERÇEKÇİ MEKTUP KUTUSU (RENDER UYUMLU)
 INDEX_HTML = """<!DOCTYPE html>
@@ -26,7 +26,7 @@ INDEX_HTML = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rojda'ya Özel</title>
+    <title>Seyhan'ıma Özel</title>
     <style>
         * {
             margin: 0;
@@ -372,7 +372,7 @@ EVET_HTML = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seni Seviyorum Rojda ❤️</title>
+    <title>Seni Seviyorum SeyhanımN ❤️</title>
     <style>
         body {
             margin: 0;
