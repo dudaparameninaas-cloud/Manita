@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rojda'ya Özel (Düzeltilmiş)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* BAŞLIK */
+        .baslik {
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: #d44e8c;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        /* GERÇEKÇİ MEKTUP KUTUSU - ZARF TASARIMI */
+        .mektup-kutusu {
+            cursor: pointer;
+            position: relative;
+            width: 500px;
+            height: 350px;
+            margin: 0 auto 40px;
+            perspective: 1500px;
+            transition: transform 0.3s;
+        }
+
+        .mektup-kutusu:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Zarf Ana Gövde */
+        .zarf {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #f9f1e0;
+            border-radius: 15px 15px 8px 8px;
+            box-shadow: 
+                0 20px 30px -10px rgba(0,0,0,0.2),
+                inset 0 -5px 0 rgba(0,0,0,0.05),
+                inset 0 5px 10px rgba(255,255,240,0.8);
+            border: 2px solid #e6d5b8;
+            overflow: hidden;
+            transition: all 0.5s;
+        }
+
+        /* Zarf Arka Plan Deseni */
+        .zarf::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(210, 180, 140, 0.1) 0px, rgba(210, 180, 140, 0.1) 2px, transparent 2px, transparent 8px);
+            pointer-events: none;
+        }
+
+        /* Zarf Kapağı (Üçgen) */
+        .zarf-kapak {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f9f1e0;
+            clip-path: polygon(0% 0%, 50% 40%, 100% 0%);
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-bottom: 2px solid #d4b68a;
+            z-index: 3;
+        }
+
+        .zarf-kapak::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,240,0.8) 0%, rgba(230,215,180,0.2) 100%);
+            clip-path: polygon(0% 0%, 50% 40%, 100% 0%);
+        }
+
+        /* Zarfın Alt Kapağı */
+        .zarf-alt {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: #e6d5b8;
+            border-radius: 0 0 8px 8px;
+            border-top: 2px solid #d4b68a;
+            z-index: 1;
+        }
+
+        /* Mektup İçi (Kağıt) */
+        .mektup-ici {
+            position: absolute;
+            /* ↑ ÖNCE 15px - ÇAKIŞIYORDU. AŞAĞIYA ALINDI */
+            top: 80px;
+            left: 20px;
+            right: 20px;
+            bottom: 30px;
+            background: #fff9f0;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(20px);
+            transition: transform 0.8s ease-out, opacity 0.6s ease;
+            z-index: 2;
+            border: 1px solid #e6d5b8;
+            overflow-y: auto;
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            text-align: left;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Mektup Açılınca */
+        .mektup-kutusu.acik .zarf-kapak {
+            transform: rotateX(180deg);
+        }
+
+        .mektup-kutusu.acik .mektup-ici {
+            transform: translateY(-100px); /* kağıdın daha yukarı çıkması için */
+            opacity: 1;
+            pointer-events: all;
+            box-shadow: 0 20px 30px -5px rgba(0,0,0,0.3);
+        }
+
+        /* Mühür */
+        .muhur {
+            position: absolute;
+            bottom: 60px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #c0a080;
+            border-radius: 50%;
+            border: 3px solid #8b6b4d;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #f9f1e0;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .muhur::after {
+            content: '❤️';
+            font-size: 24px;
+        }
+
+        /* Butonlar */
+        .butonlar {
+            margin-top: 50px;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .butonlar.goster {
+            opacity: 1;
+        }
+
+        .evet-btn, .hayir-btn {
+            padding: 15px 50px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .evet-btn {
+            background: #4CAF50;
+            color: white;
+            border-bottom: 4px solid #2e7d32;
+        }
+
+        .evet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+            background: #45a049;
+        }
+
+        .hayir-btn {
+            background: #f44336;
+            color: white;
+            border-bottom: 4px solid #b71c1c;
+        }
+
+        .hayir-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(244, 67, 54, 0.4);
+            background: #e53935;
+        }
+
+        /* Not İçeriği - DÜZENLİ GÖRÜNÜM */
+        .not-icerik {
+            white-space: pre-line;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+
+            /* taşma/çakışma engelleme */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .not-icerik p {
+            margin-bottom: 15px;
+        }
+
+        .not-icerik::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .not-icerik::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .not-icerik::-webkit-scrollbar-thumb {
+            background: #d44e8c;
+            border-radius: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .mektup-kutusu {
+                width: 320px;
+                height: 240px;
+            }
+
+            .baslik {
+                font-size: 1.5rem;
+            }
+
+            .evet-btn, .hayir-btn {
+                padding: 12px 30px;
+                font-size: 1.2rem;
+            }
+
+            .not-icerik {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="baslik">💌 Sana Özel Bir Mektup Var 💌</h1>
+
+        <div class="mektup-kutusu" id="mektupKutusu" onclick="mektupAc()">
+            <div class="zarf">
+                <div class="zarf-kapak"></div>
+                <div class="zarf-alt"></div>
+
+                <!-- Mektup içeriği -->
+                <div class="mektup-ici" id="mektupIci">
+                    <div class="not-icerik" id="notIcerik"></div>
+                </div>
+
+                <!-- Not: adres ve pul elementleri kaldırıldı, çakışma giderildi -->
+
+                <div class="muhur"></div>
+            </div>
+        </div>
+
+        <div class="butonlar" id="butonlar">
+            <button class="evet-btn" onclick="evetClick()">Evet ❤️</button>
+            <button class="hayir-btn" onclick="hayirClick()">Hayır 💔</button>
+        </div>
+    </div>
+
+    <script>
+        let mektupAcildi = false;
+
+        function mektupAc() {
+            if (!mektupAcildi) {
+                document.getElementById('mektupKutusu').classList.add('acik');
+
+                // Backend'den notu al
+                fetch('/get-not')
+                    .then(response => response.json())
+                    .then(data => {
+                        const notMetni = data.not || '';
+                        // Güvenli şekilde satırları koruyarak göster
+                        document.getElementById('notIcerik').innerHTML = notMetni.replace(/\n/g, '<br>');
+
+                        setTimeout(() => {
+                            document.getElementById('butonlar').classList.add('goster');
+                        }, 800);
+                    })
+                    .catch(() => {
+                        document.getElementById('notIcerik').innerText = 'Not yüklenemedi.';
+                        document.getElementById('butonlar').classList.add('goster');
+                    });
+
+                mektupAcildi = true;
+            }
+        }
+
+        function evetClick() {
+            window.location.href = '/evet';
+        }
+
+        function hayirClick() {
+            if (confirm('Emin misin? Bir daha düşün istersen 💕')) {
+                alert('Üzgünüm... Belki başka zaman? 😔');
+            }
+        }
+
+        // Küçük UX: klavyeden Enter ile de aç
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') mektupAc();
+        });
+    </script>
+</body>
+</html>
+
